@@ -5,10 +5,6 @@ import { useLifetimeCalculator } from "@/hooks/use-lifetime-calculator";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { GoalsTracker } from "./goals-tracker";
-import { QuotesCarousel } from "./quotes-carousel";
-import { LifeCalendar } from "./life-calendar";
-import { MilestoneCelebrations } from "./milestone-celebrations";
-import { TimeReports } from "./time-reports";
 
 type DisplayUnit = "years" | "days" | "hours" | "minutes";
 
@@ -76,9 +72,6 @@ export function TimerDisplay({
 
   return (
     <div className="space-y-6">
-      {/* Milestone Celebrations - invisible but functional component */}
-      <MilestoneCelebrations birthdate={birthdate} lifeExpectancy={lifeExpectancy} />
-      
       <Card className={cn("p-6 flex flex-col items-center gap-4", className)}>
         <div className="flex items-center justify-between w-full">
           <div
@@ -103,15 +96,6 @@ export function TimerDisplay({
           <GoalsTracker birthdate={birthdate} />
         </div>
       </Card>
-      
-      {/* Famous Quotes Carousel */}
-      <QuotesCarousel />
-      
-      {/* Time Reports */}
-      <TimeReports birthdate={birthdate} lifeExpectancy={lifeExpectancy} />
-      
-      {/* Life Calendar View */}
-      <LifeCalendar birthdate={birthdate} lifeExpectancy={lifeExpectancy} />
     </div>
   );
 }
