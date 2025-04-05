@@ -60,6 +60,11 @@ const Index = () => {
     setLifeExpectancy(years);
   };
 
+  // Handle display unit changes
+  const handleSetDisplayUnit = (unit: string) => {
+    setDisplayUnit(unit as DisplayUnit);
+  };
+
   return (
     <ThemeProvider>
       <div className="min-h-screen flex flex-col bg-background">
@@ -111,7 +116,7 @@ const Index = () => {
                 lifeExpectancy={lifeExpectancy}
                 setLifeExpectancy={handleSetLifeExpectancy}
                 displayUnit={displayUnit}
-                setDisplayUnit={setDisplayUnit}
+                setDisplayUnit={handleSetDisplayUnit}
               />
             </div>
           </div>
@@ -128,3 +133,4 @@ const Index = () => {
 };
 
 export default Index;
+
