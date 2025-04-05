@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { useLifetimeCalculator } from "@/hooks/use-lifetime-calculator";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { AnalogClock } from "./analog-clock";
 
 type DisplayUnit = "years" | "days" | "hours" | "minutes";
 
@@ -71,13 +72,18 @@ export function TimerDisplay({
 
   return (
     <Card className={cn("p-6 flex flex-col items-center gap-4", className)}>
-      <div
-        className={cn(
-          "text-4xl md:text-6xl font-mono transition-opacity font-display",
-          animate ? "animate-pulse-slow" : ""
-        )}
-      >
-        {value}
+      <div className="flex items-center justify-between w-full">
+        <div
+          className={cn(
+            "text-4xl md:text-6xl font-mono transition-opacity font-display",
+            animate ? "animate-pulse-slow" : ""
+          )}
+        >
+          {value}
+        </div>
+        <div className="hidden md:block">
+          <AnalogClock size={120} showSeconds={true} />
+        </div>
       </div>
       
       <div className="w-full space-y-2">
@@ -86,6 +92,10 @@ export function TimerDisplay({
           <span>{Math.round(timeRemaining.percentageComplete)}%</span>
         </div>
         <Progress value={timeRemaining.percentageComplete} />
+      </div>
+      
+      <div className="block md:hidden mt-4">
+        <AnalogClock size={180} showSeconds={true} />
       </div>
     </Card>
   );

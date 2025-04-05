@@ -29,6 +29,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 
 interface SettingsFormProps {
   birthdate: Date;
@@ -48,6 +50,31 @@ export function SettingsForm({
   setDisplayUnit,
 }: SettingsFormProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [localLifeExpectancy, setLocalLifeExpectancy] = useState(lifeExpectancy);
+  
+  // Create age input based on birthdate
+  const calculateAge = (birthDate: Date) => {
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    
+    return age;
+  };
+  
+  const [currentAge, setCurrentAge] = useState(calculateAge(birthdate));
+  
+  // Handle life expectancy changes
+  const handleLifeExpectancyChange = (value: number[]) => {
+    setLocalLifeExpectancy(value[0]);
+  };
+  
+  const handleLifeExpectancyCommit = () => {
+    setLifeExpectancy(localLifeExpectancy);
+  };
 
   return (
     <Card>
@@ -80,6 +107,7 @@ export function SettingsForm({
                 onSelect={(date) => {
                   if (date) {
                     setBirthdate(date);
+                    setCurrentAge(calculateAge(date));
                     setIsOpen(false);
                   }
                 }}
@@ -92,19 +120,29 @@ export function SettingsForm({
           </Popover>
         </div>
 
+        <div className="space-y-1">
+          <Label>Current Age</Label>
+          <div className="text-2xl font-mono">{currentAge} years</div>
+        </div>
+
         <div className="space-y-2">
           <div className="flex justify-between">
             <Label htmlFor="life-expectancy">Life Expectancy (years)</Label>
-            <span className="text-sm">{lifeExpectancy} years</span>
+            <span className="text-sm">{localLifeExpectancy} years</span>
           </div>
           <Slider
             id="life-expectancy"
             defaultValue={[lifeExpectancy]}
+            value={[localLifeExpectancy]}
             min={50}
             max={120}
             step={1}
-            onValueChange={(value) => setLifeExpectancy(value[0])}
+            onValueChange={handleLifeExpectancyChange}
+            onValueCommit={handleLifeExpectancyCommit}
           />
+          <div className="text-sm text-muted-foreground">
+            Adjust to match expected lifespan based on health, genetics, and lifestyle.
+          </div>
         </div>
 
         <div className="space-y-2">
