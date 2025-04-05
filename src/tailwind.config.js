@@ -62,7 +62,8 @@ module.exports = {
       },
       animation: {
         "pulse-slow": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) 1",
-        "tick": "tick 1s linear infinite",
+        "slide-in": "slideIn 0.3s ease-out",
+        "fade-in": "fadeIn 0.3s ease-out",
       },
       keyframes: {
         "accordion-down": {
@@ -73,9 +74,13 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
-        "tick": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
+        "slideIn": {
+          "0%": { transform: "translateY(10px)", opacity: 0 },
+          "100%": { transform: "translateY(0)", opacity: 1 },
+        },
+        "fadeIn": {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
         },
       },
       animationDuration: {

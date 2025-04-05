@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { useLifetimeCalculator } from "@/hooks/use-lifetime-calculator";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { AnalogClock } from "./analog-clock";
+import { GoalsTracker } from "./goals-tracker";
 
 type DisplayUnit = "years" | "days" | "hours" | "minutes";
 
@@ -81,9 +81,6 @@ export function TimerDisplay({
         >
           {value}
         </div>
-        <div className="hidden md:block">
-          <AnalogClock size={120} showSeconds={true} />
-        </div>
       </div>
       
       <div className="w-full space-y-2">
@@ -94,8 +91,8 @@ export function TimerDisplay({
         <Progress value={timeRemaining.percentageComplete} />
       </div>
       
-      <div className="block md:hidden mt-4">
-        <AnalogClock size={180} showSeconds={true} />
+      <div className="w-full mt-4">
+        <GoalsTracker birthdate={birthdate} />
       </div>
     </Card>
   );
