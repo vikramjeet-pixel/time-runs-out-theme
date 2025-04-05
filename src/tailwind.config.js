@@ -65,6 +65,9 @@ module.exports = {
         "slide-in": "slideIn 0.3s ease-out",
         "fade-in": "fadeIn 0.3s ease-out",
       },
+      gridTemplateColumns: {
+        '16': 'repeat(16, minmax(0, 1fr))',
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },

@@ -80,7 +80,6 @@ const Index = () => {
                 birthdate={birthdate}
                 lifeExpectancy={lifeExpectancy}
                 displayUnit={displayUnit as DisplayUnit}
-                className="min-h-[200px]"
               />
               
               <Card>

@@ -5,6 +5,10 @@ import { useLifetimeCalculator } from "@/hooks/use-lifetime-calculator";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { GoalsTracker } from "./goals-tracker";
+import { QuotesCarousel } from "./quotes-carousel";
+import { LifeCalendar } from "./life-calendar";
+import { MilestoneCelebrations } from "./milestone-celebrations";
+import { TimeReports } from "./time-reports";
 
 type DisplayUnit = "years" | "days" | "hours" | "minutes";
 
@@ -71,29 +75,43 @@ export function TimerDisplay({
   }, [timeRemaining, displayUnit]);
 
   return (
-    <Card className={cn("p-6 flex flex-col items-center gap-4", className)}>
-      <div className="flex items-center justify-between w-full">
-        <div
-          className={cn(
-            "text-4xl md:text-6xl font-mono transition-opacity font-display",
-            animate ? "animate-pulse-slow" : ""
-          )}
-        >
-          {value}
-        </div>
-      </div>
+    <div className="space-y-6">
+      {/* Milestone Celebrations - invisible but functional component */}
+      <MilestoneCelebrations birthdate={birthdate} lifeExpectancy={lifeExpectancy} />
       
-      <div className="w-full space-y-2">
-        <div className="flex justify-between text-sm">
-          <span>Life Progress</span>
-          <span>{Math.round(timeRemaining.percentageComplete)}%</span>
+      <Card className={cn("p-6 flex flex-col items-center gap-4", className)}>
+        <div className="flex items-center justify-between w-full">
+          <div
+            className={cn(
+              "text-4xl md:text-6xl font-mono transition-opacity font-display",
+              animate ? "animate-pulse-slow" : ""
+            )}
+          >
+            {value}
+          </div>
         </div>
-        <Progress value={timeRemaining.percentageComplete} />
-      </div>
+        
+        <div className="w-full space-y-2">
+          <div className="flex justify-between text-sm">
+            <span>Life Progress</span>
+            <span>{Math.round(timeRemaining.percentageComplete)}%</span>
+          </div>
+          <Progress value={timeRemaining.percentageComplete} />
+        </div>
+        
+        <div className="w-full mt-4">
+          <GoalsTracker birthdate={birthdate} />
+        </div>
+      </Card>
       
-      <div className="w-full mt-4">
-        <GoalsTracker birthdate={birthdate} />
-      </div>
-    </Card>
+      {/* Famous Quotes Carousel */}
+      <QuotesCarousel />
+      
+      {/* Time Reports */}
+      <TimeReports birthdate={birthdate} lifeExpectancy={lifeExpectancy} />
+      
+      {/* Life Calendar View */}
+      <LifeCalendar birthdate={birthdate} lifeExpectancy={lifeExpectancy} />
+    </div>
   );
 }
