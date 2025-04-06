@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -31,6 +31,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { useToast } from "@/hooks/use-toast";
 
 interface SettingsFormProps {
   birthdate: Date;
@@ -49,8 +50,11 @@ export function SettingsForm({
   displayUnit,
   setDisplayUnit,
 }: SettingsFormProps) {
+  const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [localLifeExpectancy, setLocalLifeExpectancy] = useState(lifeExpectancy);
+  const [inputMethod, setInputMethod] = useState<"calendar" | "manual">("calendar");
+  const [manualDateInput, setManualDateInput] = useState(format(birthdate, "yyyy-MM-dd"));
   
   // Create age input based on birthdate
   const calculateAge = (birthDate: Date) => {
@@ -76,6 +80,56 @@ export function SettingsForm({
     setLifeExpectancy(localLifeExpectancy);
   };
 
+  // Handle manual date input
+  const handleManualDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setManualDateInput(e.target.value);
+  };
+
+  const handleManualDateBlur = () => {
+    try {
+      const parsedDate = parse(manualDateInput, "yyyy-MM-dd", new Date());
+      
+      // Validate the date
+      if (isNaN(parsedDate.getTime())) {
+        toast({
+          title: "Invalid Date",
+          description: "Please enter a valid date in YYYY-MM-DD format.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Check if date is in the future
+      if (parsedDate > new Date()) {
+        toast({
+          title: "Invalid Date",
+          description: "Birthdate cannot be in the future.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Check if date is too far in the past
+      if (parsedDate < new Date("1900-01-01")) {
+        toast({
+          title: "Invalid Date",
+          description: "Birthdate cannot be earlier than 1900-01-01.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setBirthdate(parsedDate);
+      setCurrentAge(calculateAge(parsedDate));
+    } catch (error) {
+      toast({
+        title: "Invalid Date",
+        description: "Please enter a valid date in YYYY-MM-DD format.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -86,38 +140,73 @@ export function SettingsForm({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="birthdate">Date of Birth</Label>
-          <Popover open={isOpen} onOpenChange={setIsOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className={cn(
-                  "w-full justify-start text-left font-normal",
-                  !birthdate && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {birthdate ? format(birthdate, "PPP") : "Pick a date"}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <Calendar
-                mode="single"
-                selected={birthdate}
-                onSelect={(date) => {
-                  if (date) {
-                    setBirthdate(date);
-                    setCurrentAge(calculateAge(date));
-                    setIsOpen(false);
-                  }
-                }}
-                initialFocus
-                disabled={(date) =>
-                  date > new Date() || date < new Date("1900-01-01")
-                }
-              />
-            </PopoverContent>
-          </Popover>
+          <Label>Date of Birth</Label>
+          <Tabs 
+            value={inputMethod} 
+            onValueChange={(value) => setInputMethod(value as "calendar" | "manual")}
+            className="w-full"
+          >
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="calendar">Calendar</TabsTrigger>
+              <TabsTrigger value="manual">Manual Input</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="calendar" className="space-y-4">
+              <Popover open={isOpen} onOpenChange={setIsOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !birthdate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {birthdate ? format(birthdate, "PPP") : "Pick a date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={birthdate}
+                    onSelect={(date) => {
+                      if (date) {
+                        setBirthdate(date);
+                        setManualDateInput(format(date, "yyyy-MM-dd")); // Keep manual input in sync
+                        setCurrentAge(calculateAge(date));
+                        setIsOpen(false);
+                      }
+                    }}
+                    initialFocus
+                    disabled={(date) =>
+                      date > new Date() || date < new Date("1900-01-01")
+                    }
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </TabsContent>
+            
+            <TabsContent value="manual" className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="dob-manual">Enter Date (YYYY-MM-DD)</Label>
+                </div>
+                <Input
+                  id="dob-manual"
+                  type="text"
+                  placeholder="YYYY-MM-DD"
+                  value={manualDateInput}
+                  onChange={handleManualDateChange}
+                  onBlur={handleManualDateBlur}
+                  pattern="\d{4}-\d{2}-\d{2}"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Format: YYYY-MM-DD (e.g., 1990-01-15)
+                </p>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
 
         <div className="space-y-1">
