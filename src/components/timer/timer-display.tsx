@@ -76,7 +76,7 @@ export function TimerDisplay({
         <div className="flex items-center justify-between w-full">
           <div
             className={cn(
-              "text-4xl md:text-6xl font-mono transition-opacity font-display",
+              "text-4xl md:text-6xl font-display tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent font-bold",
               animate ? "animate-pulse-slow" : ""
             )}
           >
@@ -85,11 +85,11 @@ export function TimerDisplay({
         </div>
         
         <div className="w-full space-y-2">
-          <div className="flex justify-between text-sm">
-            <span>Life Progress</span>
-            <span>{Math.round(timeRemaining.percentageComplete)}%</span>
+          <div className="flex justify-between text-sm font-medium">
+            <span className="text-muted-foreground">Life Progress</span>
+            <span className="font-semibold">{Math.round(timeRemaining.percentageComplete)}%</span>
           </div>
-          <Progress value={timeRemaining.percentageComplete} />
+          <Progress value={timeRemaining.percentageComplete} className="h-2" />
         </div>
         
         <div className="w-full mt-4">
