@@ -117,95 +117,93 @@ const Index = () => {
   };
 
   return (
-    <ThemeProvider>
-      <div className="min-h-screen flex flex-col bg-background">
-        <header className="border-b py-4 px-6 flex justify-between items-center">
-          <h1 className="text-2xl font-display font-bold">Memento Mori</h1>
-          <div className="flex items-center space-x-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={handleInstallClick}
-              className="flex items-center gap-1"
-            >
-              <PlusCircle className="h-4 w-4" />
-              <span className="hidden sm:inline">Add to Home</span>
-            </Button>
-            <ThemeToggle />
-          </div>
-        </header>
-        
-        {showNotificationBanner && (
-          <div className="bg-primary/10 p-2 flex items-center justify-between">
-            <p className="text-sm text-center flex-1">
-              Add this timer to your home screen for quick access!
-            </p>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={() => setShowNotificationBanner(false)}
-              className="h-6 w-6 p-0"
-            >
-              <X className="h-4 w-4" />
-              <span className="sr-only">Dismiss</span>
-            </Button>
-          </div>
-        )}
-        
-        <main className="flex-1 container max-w-6xl py-8 px-4">
-          <div className="grid gap-8 md:grid-cols-[1fr_350px]">
-            <div className="space-y-8">
-              <TimerDisplay
-                birthdate={birthdate}
-                lifeExpectancy={lifeExpectancy}
-                displayUnit={displayUnit as DisplayUnit}
-              />
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle>About This Timer</CardTitle>
-                  <CardDescription>
-                    "Memento mori" is a Latin phrase meaning "remember that you will die."
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="prose dark:prose-invert">
-                  <p>
-                    This timer visualizes your remaining time based on average
-                    life expectancy statistics. It's a tool for reflection, not prediction.
-                  </p>
-                  <p>
-                    The practice of contemplating mortality has been embraced by philosophers,
-                    artists, and spiritual traditions throughout history as a way to appreciate
-                    life and focus on what truly matters.
-                  </p>
-                  <blockquote>
-                    "Let us prepare our minds as if we'd come to the very end of life. 
-                    Let us postpone nothing. Let us balance life's books each day." 
-                    — Seneca
-                  </blockquote>
-                </CardContent>
-              </Card>
-            </div>
-            
-            <div>
-              <SettingsForm
-                birthdate={birthdate}
-                setBirthdate={handleSetBirthdate}
-                lifeExpectancy={lifeExpectancy}
-                setLifeExpectancy={handleSetLifeExpectancy}
-                displayUnit={displayUnit}
-                setDisplayUnit={handleSetDisplayUnit}
-              />
-            </div>
-          </div>
-        </main>
-        
-        <footer className="border-t py-4 px-6 text-center text-sm text-muted-foreground">
-          <p>
-            © {new Date().getFullYear()} Memento Mori Timer • Time is precious, use it wisely.
+    <div className="min-h-screen flex flex-col bg-background">
+      <header className="border-b py-4 px-6 flex justify-between items-center">
+        <h1 className="text-2xl font-display font-bold">Memento Mori</h1>
+        <div className="flex items-center space-x-2">
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={handleInstallClick}
+            className="flex items-center gap-1"
+          >
+            <PlusCircle className="h-4 w-4" />
+            <span className="hidden sm:inline">Add to Home</span>
+          </Button>
+          <ThemeToggle />
+        </div>
+      </header>
+      
+      {showNotificationBanner && (
+        <div className="bg-primary/10 p-2 flex items-center justify-between">
+          <p className="text-sm text-center flex-1">
+            Add this timer to your home screen for quick access!
           </p>
-        </footer>
-      </div>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => setShowNotificationBanner(false)}
+            className="h-6 w-6 p-0"
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">Dismiss</span>
+          </Button>
+        </div>
+      )}
+      
+      <main className="flex-1 container max-w-6xl py-8 px-4">
+        <div className="grid gap-8 md:grid-cols-[1fr_350px]">
+          <div className="space-y-8">
+            <TimerDisplay
+              birthdate={birthdate}
+              lifeExpectancy={lifeExpectancy}
+              displayUnit={displayUnit as DisplayUnit}
+            />
+            
+            <Card>
+              <CardHeader>
+                <CardTitle>About This Timer</CardTitle>
+                <CardDescription>
+                  "Memento mori" is a Latin phrase meaning "remember that you will die."
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="prose dark:prose-invert">
+                <p>
+                  This timer visualizes your remaining time based on average
+                  life expectancy statistics. It's a tool for reflection, not prediction.
+                </p>
+                <p>
+                  The practice of contemplating mortality has been embraced by philosophers,
+                  artists, and spiritual traditions throughout history as a way to appreciate
+                  life and focus on what truly matters.
+                </p>
+                <blockquote>
+                  "Let us prepare our minds as if we'd come to the very end of life. 
+                  Let us postpone nothing. Let us balance life's books each day." 
+                  — Seneca
+                </blockquote>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div>
+            <SettingsForm
+              birthdate={birthdate}
+              setBirthdate={handleSetBirthdate}
+              lifeExpectancy={lifeExpectancy}
+              setLifeExpectancy={handleSetLifeExpectancy}
+              displayUnit={displayUnit}
+              setDisplayUnit={handleSetDisplayUnit}
+            />
+          </div>
+        </div>
+      </main>
+      
+      <footer className="border-t py-4 px-6 text-center text-sm text-muted-foreground">
+        <p>
+          © {new Date().getFullYear()} Memento Mori Timer • Time is precious, use it wisely.
+        </p>
+      </footer>
 
       {/* Dialog with instructions for adding to home screen */}
       <Dialog open={showAddToHomeDialog} onOpenChange={setShowAddToHomeDialog}>
@@ -249,9 +247,7 @@ const Index = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      
-      <ThemeProvider>
-    </ThemeProvider>
+    </div>
   );
 };
 
