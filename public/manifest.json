@@ -1,0 +1,33 @@
+
+{
+  "name": "Memento Mori Timer",
+  "short_name": "Memento Mori",
+  "description": "A reminder of the finite nature of time",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#18181b",
+  "theme_color": "#18181b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "View Timer",
+      "short_name": "Timer",
+      "description": "View your life timer",
+      "url": "/?utm_source=homescreen"
+    }
+  ]
+}

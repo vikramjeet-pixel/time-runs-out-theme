@@ -13,6 +13,7 @@ interface TimerDisplayProps {
   lifeExpectancy: number;
   displayUnit?: DisplayUnit;
   className?: string;
+  compact?: boolean; // New prop for widget-like display
 }
 
 export function TimerDisplay({
@@ -20,6 +21,7 @@ export function TimerDisplay({
   lifeExpectancy,
   displayUnit = "years",
   className,
+  compact = false,
 }: TimerDisplayProps) {
   const timeRemaining = useLifetimeCalculator({
     birthdate,
@@ -69,6 +71,26 @@ export function TimerDisplay({
       setTimeout(() => setAnimate(false), 1000);
     }
   }, [timeRemaining, displayUnit]);
+
+  // Return compact version for widgets/lockscreen
+  if (compact) {
+    return (
+      <div className="space-y-2 p-4">
+        <div
+          className={cn(
+            "text-2xl font-display tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent font-bold",
+            animate ? "animate-pulse-slow" : ""
+          )}
+        >
+          {value}
+        </div>
+        <Progress 
+          value={timeRemaining.percentageComplete} 
+          className="h-1.5" 
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
