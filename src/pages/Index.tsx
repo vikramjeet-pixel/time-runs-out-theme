@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   Card,
@@ -11,8 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TimerDisplay } from "@/components/timer/timer-display";
 import { SettingsForm } from "@/components/timer/settings-form";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
-import { ThemeProvider } from "@/components/theme/theme-provider";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Share, PlusCircle, Info, X } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,7 +43,6 @@ export function GoalsTracker({ className, birthdate }: GoalsTrackerProps) {
     percentage: number;
   }}>({});
   
-  // Calculate remaining time for each goal
   useEffect(() => {
     const intervalId = setInterval(() => {
       const now = new Date();
@@ -56,10 +54,8 @@ export function GoalsTracker({ className, birthdate }: GoalsTrackerProps) {
         const total = differenceInMilliseconds(targetDate, birthdate);
         const elapsed = total - remaining;
         
-        // Calculate days remaining
         const daysRemaining = Math.max(0, Math.floor(remaining / (1000 * 60 * 60 * 24)));
         
-        // Calculate percentage of time elapsed
         const percentageComplete = Math.min(100, Math.max(0, (elapsed / total) * 100));
         
         newTimeRemaining[goal.id] = {
@@ -74,7 +70,6 @@ export function GoalsTracker({ className, birthdate }: GoalsTrackerProps) {
     return () => clearInterval(intervalId);
   }, [goals, birthdate]);
   
-  // Save goals to localStorage when they change
   useEffect(() => {
     localStorage.setItem("life-goals", JSON.stringify(goals));
   }, [goals]);
